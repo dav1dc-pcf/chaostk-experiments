@@ -1,0 +1,77 @@
+{
+  "version": "0.1.0",
+  "title": "Blocking spring-music makes it unreachable.",
+  "description": "This is a testing experiment to verify the script's block traffic function works.",
+  "tags": ["cloudfoundry", "bosh", "springboot"],
+  "configuration": {
+    "TODO": "Some of this needs to be part of the application configuration since the user of this would not know what the cli commands are for instance.",
+    "bosh": {
+      "cmd": "bosh2",
+      "env": "tt-stg02",
+      "cf-dep": "cf-da0ba81cb255ad93a508",
+      "cfdot-dc": "diego_cell/0"
+    },
+    "cf": {
+      "cmd": "cf"
+    },
+    "container-port-whitelist": [22, 2222],
+    "host-port-whitelist": [],
+    "service-whitelist": ["T-Logger"],
+    "quantum": 6000
+  },
+  "steady-state-hypothesis": {
+    "title": "We can access the application and other neighboring applications (This should fail because we block all traffic)",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "spring-music-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "https://spring-music-responsible-lemur-uh.cfapps.io/"
+        }
+      },
+      {
+        "type": "probe",
+        "name": "spring-music2-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "https://www.google.com/"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "block-traffic",
+      "provider": {
+        "type": "python",
+        "module": "monarch.pcf.actions",
+        "func": "block_traffic",
+        "arguments": {
+          "org": "sys-tmo",
+          "space": "test",
+          "appname": "spring-music"
+        }
+      }
+    }
+  ],
+  "rollbacks": [
+    {
+      "type": "action",
+      "name": "unblock-traffic",
+      "provider": {
+        "type": "python",
+        "module": "monarch.pcf.actions",
+        "func": "unblock_traffic",
+        "arguments": {
+          "org": "sys-tmo",
+          "space": "test",
+          "appname": "spring-music"
+        }
+      }
+    }
+  ]
+}
