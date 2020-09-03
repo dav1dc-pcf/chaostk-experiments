@@ -1,0 +1,55 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of killing one random GoRouter?",
+  "description": "If a GoRouter dies, then it should be restarted automatically and any applications traffic should be directed to the other GoRouters that remained UP",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls"
+  ],
+  "steady-state-hypothesis": {
+    "title": "Spring-Music Application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "spring-music-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "https://spring-music-test1.some.gap.url.com/"
+        }
+      }
+    ]
+  },
+  "configuration": {
+    "turb_api_url": "https://turbulence:PASSWORD@10.244.0.35:8080",
+    "turb_verify_ssl": false
+  },
+    "method": [
+    {
+      "type": "action",
+      "name": "terminate-router",
+      "provider": {
+        "type": "python",
+        "module": "chaosturbulence.actions",
+        "func": "attack",
+        "arguments": {
+          "task": { "Type": "Kill" },
+          "selector": {
+            "Deployment": {"Name": "cf"},
+            "Group": {"Name": "router"},
+            "ID": {"Limit": 1}
+          }
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+    "rollbacks": []
+}
