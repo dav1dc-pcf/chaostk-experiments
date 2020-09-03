@@ -1,0 +1,77 @@
+{
+  "version": "0.1.0",
+  "title": "Terminate one instance of an application to test CF resilance",
+  "description": "This is an experiment that will terminate one instance of an application to ensure it self-heals and there is limited disruption to traffic",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "cloudfoundry", 
+    "bosh", 
+    "springboot"
+  ],
+  "configuration": {
+    "cf_api_url": {
+      "type": "env",
+      "key": "CF_API_URL",
+      "default": "https://api.run.pivotal.io"
+    },
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "cf_verify_ssl": false
+  },
+  "secrets": {
+    "cloudfoundry": {
+      "cf_username": {
+        "type": "env",
+        "key": "CF_USERNAME",
+        "default": "username"
+      },
+      "cf_password": {
+        "type": "env",
+        "key": "CF_PASSWORD",
+        "default": "password"
+      }
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "We can access the test application on the CF platform",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "terminate-random-instance",
+      "provider": {
+        "module": "chaoscf.actions",
+        "arguments": {
+          "app_name": "spring-music"
+        },
+        "type": "python",
+        "secrets": ["cloudfoundry"],
+        "func": "terminate_some_random_instance"
+      },
+      "pauses": {
+        "after": 5
+      }
+    }
+  ],
+  "rollbacks": [
+  ]
+}
