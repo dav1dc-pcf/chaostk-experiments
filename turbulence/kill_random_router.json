@@ -9,27 +9,37 @@
     "security": "none"
   },
   "tags": [
-    "tls"
+    "tls",
+    "cloudfoundry"
   ],
+  "configuration": {
+    "turb_verify_ssl": false,
+    "turb_api_url": {
+      "type": "env",
+      "key": "TURBULENCE_URL",
+      "default": "https://turbulence:PASSWORD@10.244.0.35:8080"
+    },
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    }
+  },
   "steady-state-hypothesis": {
-    "title": "Spring-Music Application responds",
+    "title": "Test application responds",
     "probes": [
       {
         "type": "probe",
-        "name": "spring-music-responds",
+        "name": "test-app-responds",
         "tolerance": 200,
         "provider": {
           "type": "http",
-          "url": "https://spring-music-test1.some.gap.url.com/"
+          "url": "${site_to_test}"
         }
       }
     ]
   },
-  "configuration": {
-    "turb_api_url": "https://turbulence:PASSWORD@10.244.0.35:8080",
-    "turb_verify_ssl": false
-  },
-    "method": [
+  "method": [
     {
       "type": "action",
       "name": "terminate-router",
@@ -51,5 +61,5 @@
       }
     }
     ],
-    "rollbacks": []
+  "rollbacks": []
 }
