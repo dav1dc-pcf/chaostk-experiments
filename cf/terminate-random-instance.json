@@ -24,6 +24,21 @@
       "key": "SITE_TO_TEST",
       "default": "https://www.google.com/"
     },
+    "cf_org": {
+      "type": "env",
+      "key": "CF_ORG",
+      "default": "orgname"
+    },
+    "cf_space": {
+      "type": "env",
+      "key": "CF_SPACE",
+      "default": "chaos"
+    },
+    "cf_app_name": {
+      "type": "env",
+      "key": "CF_APP_NAME",
+      "default": "spring-music"
+    },
     "cf_verify_ssl": false
   },
   "secrets": {
@@ -61,7 +76,9 @@
       "provider": {
         "module": "chaoscf.actions",
         "arguments": {
-          "app_name": "spring-music"
+          "app_name": "${cf_app_name}",
+          "org_name": "${cf_org}",
+          "space_name": "${cf_space}"
         },
         "type": "python",
         "secrets": ["cloudfoundry"],
