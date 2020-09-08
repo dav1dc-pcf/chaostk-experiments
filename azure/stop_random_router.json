@@ -19,7 +19,8 @@
       "type": "env",
       "key": "SITE_TO_TEST",
       "default": "https://www.google.com/"
-    }
+    },
+    "filter_to_apply": "where resourceGroup=='gieo-sre' and tags.deployment='cf-123ABC' and tags.job='router'"
   },
   "steady-state-hypothesis": {
     "title": "Test application responds",
@@ -44,7 +45,7 @@
         "module": "chaosazure.machine.actions",
         "func": "stop_machines",
         "arguments": {
-          "filter": "where resourceGroup=='gieo-sre' and tags.project_name=~'Azure-Chaos-Monkey'"
+          "filter": "${filter_to_apply}"
         }
       },
       "pauses": {
@@ -52,5 +53,21 @@
       }
     }
     ],
-  "rollbacks": []
+  "rollbacks": [
+    {
+      "type": "action",
+      "name": "restart-stopped-router-vm",
+      "provider": {
+        "type": "python",
+        "module": "chaosazure.machine.actions",
+        "func": "start_machines",
+        "arguments": {
+          "filter": "${filter_to_apply}"
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+  ]
 }
