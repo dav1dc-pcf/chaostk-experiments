@@ -20,7 +20,7 @@
       "key": "SITE_TO_TEST",
       "default": "https://www.google.com/"
     },
-    "filter_to_apply": "where resourceGroup=='gieo-sre' and tags.deployment='cf-123ABC' and tags.job='router'"
+    "filter_to_apply": "where resourceGroup=='gieo-sre' and tags.deployment='cf-123ABC' and tags.job='router' | limit 1"
   },
   "steady-state-hypothesis": {
     "title": "Test application responds",
@@ -49,7 +49,7 @@
           "duration": 240,
           "timeout": 60,
           "size": 2000,
-          "path": "/tmp"
+          "path": "/var/vcap/data/burn-baby-burn"
         }
       },
       "pauses": {
