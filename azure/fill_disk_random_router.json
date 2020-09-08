@@ -1,0 +1,61 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of Filling UP the disk on one random GoRouter VM?",
+  "description": "If a GoRouter's disk has been filled UP, then what happens to the routing service? // Set AZURE_AUTH_LOCATION to the location of your Azure Auth file",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls",
+    "cloudfoundry",
+    "router"
+  ],
+  "configuration": {
+    "azure_subscription_id": "azure_subscription_id",
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "filter_to_apply": "where resourceGroup=='gieo-sre' and tags.deployment='cf-123ABC' and tags.job='router'"
+  },
+  "steady-state-hypothesis": {
+    "title": "Test application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "fill-disk-tmp-router",
+      "provider": {
+        "type": "python",
+        "module": "chaosazure.machine.actions",
+        "func": "fill_disk",
+        "arguments": {
+          "filter": "${filter_to_apply}",
+          "duration": 240,
+          "timeout": 60,
+          "size": 2000,
+          "path": "/tmp"
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+  "rollbacks": []
+}
