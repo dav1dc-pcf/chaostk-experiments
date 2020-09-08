@@ -43,7 +43,7 @@
   "method": [
     {
       "type": "action",
-      "name": "terminate-router",
+      "name": "stress-router-cpu",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
