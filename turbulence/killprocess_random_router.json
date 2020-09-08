@@ -1,0 +1,66 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of Process Killing the router Process on one random GoRouter?",
+  "description": "If a GoRouter's routing Process is terminated, then what happens to the routing service?",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls",
+    "cloudfoundry",
+    "router"
+  ],
+  "configuration": {
+    "turb_verify_ssl": false,
+    "turb_api_url": {
+      "type": "env",
+      "key": "TURBULENCE_URL",
+      "default": "https://turbulence:PASSWORD@10.244.0.35:8080"
+    },
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "Test application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "terminate-router",
+      "provider": {
+        "type": "python",
+        "module": "chaosturbulence.actions",
+        "func": "attack",
+        "arguments": {
+          "task": { "Type": "KillProcess", "MonitoredProcessName": "router" },
+          "selector": {
+            "Deployment": {"Name": "cf-123ABC"},
+            "Group": {"Name": "router"},
+            "ID": {"Limit": 1}
+          }
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+  "rollbacks": []
+}
