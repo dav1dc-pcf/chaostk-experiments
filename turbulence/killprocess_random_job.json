@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of selectively terminating important processes running on selected PCF/TA=S VM's?",
+  "title": "What is the impact of selectively terminating important processes running on selected PCF/TAS VM's?",
   "description": "If a critical process is terminated, then what happens to the quality of service?",
   "contributions": {
     "reliability": "high",
