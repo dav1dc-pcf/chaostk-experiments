@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of Filling UP the disk on one random PCF VM?",
-  "description": "If a random PCF VM's disk has been filled UP, then what happens to the quality of service? // Set AZURE_AUTH_LOCATION to the location of your Azure Auth file",
+  "title": "What is the impact of adding artifical network latehncy to one random PCF VM?",
+  "description": "If a random PCF VM's network latency has increased dramatically, then what happens to the quality of service? // Set AZURE_AUTH_LOCATION to the location of your Azure Auth file",
   "contributions": {
     "reliability": "high",
     "availability": "high",
@@ -43,22 +43,22 @@
     "duration": {
       "type": "env",
       "key": "DURATION_SECONDS",
-      "default": 240
+      "default": 60
     },
     "timeout": {
       "type": "env",
       "key": "TIMEOUT_SECONDS",
       "default": 60
     },
-    "file_size": {
+    "delay": {
       "type": "env",
-      "key": "FILL_FILE_SIZE_MB",
-      "default": 1000
+      "key": "NET_DELAY",
+      "default": 200
     },
-    "file_path": {
+    "jitter": {
       "type": "env",
-      "key": "FILL_FILENAME",
-      "default": "/var/vcap/data/burn-baby-burn"
+      "key": "NET_JITTER",
+      "default": 50
     }
   },
   "steady-state-hypothesis": {
@@ -78,17 +78,17 @@
   "method": [
     {
       "type": "action",
-      "name": "fill-disk-on-random-vm",
+      "name": "add-artifical-network-latency",
       "provider": {
         "type": "python",
         "module": "chaosazure.machine.actions",
-        "func": "fill_disk",
+        "func": "network_latency",
         "arguments": {
           "filter": "where resourceGroup=='${resource_group}' and tags.deployment='${deployment_name}' and tags.job='${job_name}' | limit ${limit_nodes}",
           "duration": "${duration}",
           "timeout": "${timeout}",
-          "size": "${file_size}",
-          "path": "${file_path}"
+          "delay": "${delay}",
+          "jitter": "${jitter}"
         }
       },
       "pauses": {
