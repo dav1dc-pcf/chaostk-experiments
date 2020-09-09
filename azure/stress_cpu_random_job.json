@@ -1,0 +1,88 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of adding CPU load to one random PCF VMs?",
+  "description": "If a PCF VM's CPU is stressed, then what happens to the quality of service? // Set AZURE_AUTH_LOCATION to the location of your Azure Auth file",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls",
+    "cloudfoundry",
+    "router"
+  ],
+  "configuration": {
+    "azure_subscription_id": "your-azure-subscription-id-goes-here",
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "resource_group": {
+      "type": "env",
+      "key": "RESOURCE_GROUP",
+      "default": "some-resource-grp"
+    },
+    "deployment_name": {
+      "type": "env",
+      "key": "DEPLOYMENT_NAME",
+      "default": "cf-123ABC"
+    },
+    "job_name": {
+      "type": "env",
+      "key": "JOB_NAME",
+      "default": "router"
+    },
+    "limit_nodes": {
+      "type": "env",
+      "key": "LIMIT",
+      "default": 1
+    },
+    "duration": {
+      "type": "env",
+      "key": "DURATION_SECONDS",
+      "default": 240
+    },
+    "timeout": {
+      "type": "env",
+      "key": "TIMEOUT_SECONDS",
+      "default": 60
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "Test application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "stress-cpu-on-random-vm",
+      "provider": {
+        "type": "python",
+        "module": "chaosazure.machine.actions",
+        "func": "stress_cpu",
+        "arguments": {
+          "filter": "where resourceGroup=='${resource_group}' and tags.deployment='${deployment_name}' and tags.job='${job_name}' | limit ${limit_nodes}",
+          "duration": "${duration}",
+          "timeout": "${timeout}"
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+  "rollbacks": []
+}
