@@ -84,7 +84,7 @@
         "module": "chaosazure.machine.actions",
         "func": "fill_disk",
         "arguments": {
-          "filter": "where resourceGroup=='${resource_group}' and tags.deployment='${deployment_name}' and tags.job='${job_name}' | limit ${limit_nodes}",
+          "filter": "where resourceGroup=='${resource_group}' and tags.deployment=='${deployment_name}' and tags.job=='${job_name}' | limit ${limit_nodes}",
           "duration": "${duration}",
           "timeout": "${timeout}",
           "size": "${file_size}",
