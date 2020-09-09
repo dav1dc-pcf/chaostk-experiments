@@ -1,0 +1,76 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of deleting an entire AZ worth of PCF VMs?",
+  "description": "If an entire zone worth of PCF VM's are deleted, then what happens to the quality of service? // Set AZURE_AUTH_LOCATION to the location of your Azure Auth file",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls",
+    "cloudfoundry",
+    "router"
+  ],
+  "configuration": {
+    "azure_subscription_id": "your-azure-subscription-id-goes-here",
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "resource_group": {
+      "type": "env",
+      "key": "RESOURCE_GROUP",
+      "default": "some-resource-grp"
+    },
+    "deployment_name": {
+      "type": "env",
+      "key": "DEPLOYMENT_NAME",
+      "default": "cf-123ABC"
+    },
+    "limit_nodes": {
+      "type": "env",
+      "key": "LIMIT",
+      "default": 3
+    },
+    "zone_to_delete": {
+      "type": "env",
+      "key": "ZONE_TO_DELETE",
+      "default": 1
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "Test application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "delete-entire-az-worth-of-vms",
+      "provider": {
+        "type": "python",
+        "module": "chaosazure.machine.actions",
+        "func": "delete_machines",
+        "arguments": {
+          "filter": "where resourceGroup=='${resource_group}' and tags.deployment='${deployment_name}' and zone='${zone_to_delete}' | limit ${limit_nodes}"
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+  "rollbacks": []
+}
