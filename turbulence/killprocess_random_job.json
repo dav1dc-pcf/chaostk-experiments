@@ -43,7 +43,7 @@
     "process_name_to_kill": {
       "type": "env",
       "key": "PROCESS_NAME_TO_KILL",
-      "default": "router"
+      "default": "gorouter"
     }
   },
   "steady-state-hypothesis": {
