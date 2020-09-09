@@ -1,16 +1,17 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of killing one random diego cell?",
-  "description": "If a diego-cell dies, then it should be restarted automatically and any applications on it should be relocated",
+  "title": "What is the impact of selectively terminating important processes running on selected PCF/TA=S VM's?",
+  "description": "If a critical process is terminated, then what happens to the quality of service?",
   "contributions": {
     "reliability": "high",
     "availability": "high",
     "performance": "medium",
     "security": "none"
   },
-   "tags": [
+  "tags": [
     "tls",
-    "cloudfoundry"
+    "cloudfoundry",
+    "router"
   ],
   "configuration": {
     "turb_verify_ssl": false,
@@ -23,6 +24,26 @@
       "type": "env",
       "key": "SITE_TO_TEST",
       "default": "https://www.google.com/"
+    },
+    "deployment_name": {
+      "type": "env",
+      "key": "DEPLOYMENT_NAME",
+      "default": "cf-123ABC"
+    },
+    "job_name": {
+      "type": "env",
+      "key": "JOB_NAME",
+      "default": "router"
+    },
+    "limit_nodes": {
+      "type": "env",
+      "key": "LIMIT",
+      "default": 1
+    },
+    "process_name_to_kill": {
+      "type": "env",
+      "key": "PROCESS_NAME_TO_KILL",
+      "default": "router"
     }
   },
   "steady-state-hypothesis": {
@@ -42,17 +63,17 @@
   "method": [
     {
       "type": "action",
-      "name": "terminate-diego-cell",
+      "name": "terminate-process",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "Kill" },
+          "task": { "Type": "KillProcess", "MonitoredProcessName": "${process_name_to_kill}" },
           "selector": {
-            "Deployment": {"Name": "cf"},
-            "Group": {"Name": "diego_cell"},
-            "ID": {"Limit": 1}
+            "Deployment": {"Name": "${deployment_name}"},
+            "Group": {"Name": "${job_name}"},
+            "ID": {"Limit": "${limit_nodes}"}
           }
         }
       },
