@@ -10,8 +10,7 @@
   },
   "tags": [
     "tls",
-    "cloudfoundry",
-    "router"
+    "cloudfoundry"
   ],
   "configuration": {
     "turb_verify_ssl": false,

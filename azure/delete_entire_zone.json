@@ -10,8 +10,7 @@
   },
   "tags": [
     "tls",
-    "cloudfoundry",
-    "router"
+    "cloudfoundry"
   ],
   "configuration": {
     "azure_subscription_id": "your-azure-subscription-id-goes-here",

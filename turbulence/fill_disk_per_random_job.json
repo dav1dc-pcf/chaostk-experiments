@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of blocking access to DNS on selected PCF/TAS VM's?",
-  "description": "If a PCF/TAS VM has access to DNS blocked, then what happens to the quality of service?",
+  "title": "What is the impact of filling up the Temporary disk on one random GoRouter?",
+  "description": "If a GoRouter's local Temporary disk fills up, then what happens to the routing service?",
   "contributions": {
     "reliability": "high",
     "availability": "high",
@@ -10,8 +10,7 @@
   },
   "tags": [
     "tls",
-    "cloudfoundry",
-    "router"
+    "cloudfoundry"
   ],
   "configuration": {
     "turb_verify_ssl": false,
@@ -39,11 +38,6 @@
       "type": "env",
       "key": "LIMIT",
       "default": 1
-    },
-    "timeout": {
-      "type": "env",
-      "key": "TIMEOUT",
-      "default": "10m"
     }
   },
   "steady-state-hypothesis": {
@@ -63,13 +57,13 @@
   "method": [
     {
       "type": "action",
-      "name": "block-outbound-dns",
+      "name": "fill-tmp-disk",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "BlockDNS", "Timeout": "${timeout}" },
+          "task": { "Type": "FillDisk", "Persistent": true },
           "selector": {
             "Deployment": {"Name": "${deployment_name}"},
             "Group": {"Name": "${job_name}"},

@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of killing one random GoRouter?",
-  "description": "If a GoRouter dies, then it should be restarted automatically and any applications traffic should be directed to the other GoRouters that remained UP",
+  "title": "What is the impact of loading up the CPU on one random GoRouter?",
+  "description": "If a GoRouter's CPU is fully loaded, then what happens to the routing service?",
   "contributions": {
     "reliability": "high",
     "availability": "high",
@@ -23,6 +23,26 @@
       "type": "env",
       "key": "SITE_TO_TEST",
       "default": "https://www.google.com/"
+    },
+    "deployment_name": {
+      "type": "env",
+      "key": "DEPLOYMENT_NAME",
+      "default": "cf-123ABC"
+    },
+    "job_name": {
+      "type": "env",
+      "key": "JOB_NAME",
+      "default": "router"
+    },
+    "limit_nodes": {
+      "type": "env",
+      "key": "LIMIT",
+      "default": 1
+    },
+    "cpu_workers": {
+      "type": "env",
+      "key": "STRESS_CPU_NUM_WORKERS",
+      "default": 2
     }
   },
   "steady-state-hypothesis": {
@@ -42,17 +62,17 @@
   "method": [
     {
       "type": "action",
-      "name": "terminate-router",
+      "name": "stress-cpu",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "Kill" },
+          "task": { "Type": "Stress", "NumCPUWorkers": "${cpu_workers}" },
           "selector": {
-            "Deployment": {"Name": "cf"},
-            "Group": {"Name": "router"},
-            "ID": {"Limit": 1}
+            "Deployment": {"Name": "${deployment_name}"},
+            "Group": {"Name": "${job_name}"},
+            "ID": {"Limit": "${limit_nodes}"}
           }
         }
       },
