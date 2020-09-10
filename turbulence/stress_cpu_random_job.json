@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of loading up the CPU on one random GoRouter?",
-  "description": "If a GoRouter's CPU is fully loaded, then what happens to the routing service?",
+  "title": "What is the impact of loading up the CPU on one random PCF/TAS VM?",
+  "description": "If a random PCF/TAS VM is fully CPU loaded, then what happens to the quality of service?",
   "contributions": {
     "reliability": "high",
     "availability": "high",

@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of filling up the Persistent disk on one random PCF/TAS VM?",
-  "description": "If a random PCF/TAS VM's local Persistent disk fills up, then what happens to the quality of service?",
+  "title": "What is the impact of blocking all network traffic on one random PCF/TAS VM?",
+  "description": "If a random PCF/TAS VM's network traffic is blocked, then what happens to the quality of service?",
   "contributions": {
     "reliability": "high",
     "availability": "high",
@@ -38,6 +38,11 @@
       "type": "env",
       "key": "LIMIT",
       "default": 1
+    },
+    "block_timeout": {
+      "type": "env",
+      "key": "NET_TIMEOUT",
+      "default": "5m"
     }
   },
   "steady-state-hypothesis": {
@@ -57,13 +62,13 @@
   "method": [
     {
       "type": "action",
-      "name": "fill-tmp-disk",
+      "name": "stress-cpu",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "FillDisk", "Persistent": true },
+          "task": { "Type": "Firewall", "Timeout": "${block_timeout}" },
           "selector": {
             "Deployment": {"Name": "${deployment_name}"},
             "Group": {"Name": "${job_name}"},
