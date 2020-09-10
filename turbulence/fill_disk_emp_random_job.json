@@ -57,7 +57,7 @@
   "method": [
     {
       "type": "action",
-      "name": "fill-tmp-disk",
+      "name": "fill-emp-disk",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",

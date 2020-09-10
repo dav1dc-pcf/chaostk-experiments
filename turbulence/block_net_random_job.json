@@ -62,7 +62,7 @@
   "method": [
     {
       "type": "action",
-      "name": "stress-cpu",
+      "name": "block-network",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",

@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
-  "title": "What is the impact of reduce the network's QoS on one random PCF/TAS VM?",
-  "description": "If a random PCF/TAS VM's network traffic has become unreliable, then what happens to the quality of service?",
+  "title": "What is the impact of crashing one random PCF/TAS VM?",
+  "description": "If a random PCF/TAS VM has crashed, then what happens to the quality of service?",
   "contributions": {
     "reliability": "high",
     "availability": "high",
@@ -38,31 +38,6 @@
       "type": "env",
       "key": "LIMIT",
       "default": 1
-    },
-    "network_timeout": {
-      "type": "env",
-      "key": "NET_TIMEOUT",
-      "default": "5m"
-    },
-    "delay": {
-      "type": "env",
-      "key": "NET_DELAY",
-      "default": "200ms"
-    },
-    "delay_var": {
-      "type": "env",
-      "key": "NET_DELAY_VAR",
-      "default": "25ms"
-    },
-    "loss": {
-      "type": "env",
-      "key": "NET_LOSS",
-      "default": "5%"
-    },
-    "loss_corr": {
-      "type": "env",
-      "key": "NET_LOSS_CORR",
-      "default": "75%"
     }
   },
   "steady-state-hypothesis": {
@@ -82,13 +57,13 @@
   "method": [
     {
       "type": "action",
-      "name": "add-network-delays",
+      "name": "crash-random-vm",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "ControlNet", "Timeout": "${network_timeout}", "Delay": "${delay}", "DelayVariation": "${delay_var}", "Loss": "${loss}", "LossCorrelation": "${loss_corr}" },
+          "task": { "Type": "Shutdown", "Crash": true },
           "selector": {
             "Deployment": {"Name": "${deployment_name}"},
             "Group": {"Name": "${job_name}"},

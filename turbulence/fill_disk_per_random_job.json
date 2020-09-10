@@ -57,7 +57,7 @@
   "method": [
     {
       "type": "action",
-      "name": "fill-tmp-disk",
+      "name": "fill-per-disk",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
