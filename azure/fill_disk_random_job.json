@@ -85,9 +85,9 @@
         "func": "fill_disk",
         "arguments": {
           "filter": "where resourceGroup=='${resource_group}' and tags.deployment=='${deployment_name}' and tags.job=='${job_name}' | limit ${limit_nodes}",
-          "duration": "${duration}",
-          "timeout": "${timeout}",
-          "size": "${file_size}",
+          "duration": 240,
+          "timeout": 60,
+          "size": 1000,
           "path": "${file_path}"
         }
       },

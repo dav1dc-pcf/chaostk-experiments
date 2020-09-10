@@ -85,10 +85,10 @@
         "func": "network_latency",
         "arguments": {
           "filter": "where resourceGroup=='${resource_group}' and tags.deployment=='${deployment_name}' and tags.job=='${job_name}' | limit ${limit_nodes}",
-          "duration": "${duration}",
-          "timeout": "${timeout}",
-          "delay": "${delay}",
-          "jitter": "${jitter}"
+          "duration": 60,
+          "timeout": 60,
+          "delay": 200,
+          "jitter": 50
         }
       },
       "pauses": {

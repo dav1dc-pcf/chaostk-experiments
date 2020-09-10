@@ -75,8 +75,8 @@
         "func": "stress_cpu",
         "arguments": {
           "filter": "where resourceGroup=='${resource_group}' and tags.deployment=='${deployment_name}' and tags.job=='${job_name}' | limit ${limit_nodes}",
-          "duration": "${duration}",
-          "timeout": "${timeout}"
+          "duration": 240,
+          "timeout": 60
         }
       },
       "pauses": {

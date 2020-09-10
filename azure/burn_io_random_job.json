@@ -75,8 +75,8 @@
         "func": "burn_io",
         "arguments": {
           "filter": "where resourceGroup=='${resource_group}' and tags.deployment=='${deployment_name}' and tags.job=='${job_name}' | limit ${limit_nodes}",
-          "duration": "${duration}",
-          "timeout": "${timeout}"
+          "duration": 60,
+          "timeout": 60
         }
       },
       "pauses": {
