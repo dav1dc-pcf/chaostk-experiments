@@ -1,0 +1,85 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of blocking all DNS traffic on one random PCF/TAS VM?",
+  "description": "If a random PCF/TAS VM has had its DNS queries blocked, then what happens to the quality of service?",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls",
+    "cloudfoundry"
+  ],
+  "configuration": {
+    "turb_verify_ssl": false,
+    "turb_api_url": {
+      "type": "env",
+      "key": "TURBULENCE_URL",
+      "default": "https://turbulence:PASSWORD@10.244.0.35:8080"
+    },
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "deployment_name": {
+      "type": "env",
+      "key": "DEPLOYMENT_NAME",
+      "default": "cf-123ABC"
+    },
+    "job_name": {
+      "type": "env",
+      "key": "JOB_NAME",
+      "default": "router"
+    },
+    "limit_nodes": {
+      "type": "env",
+      "key": "LIMIT",
+      "default": 1
+    },
+    "block_timeout": {
+      "type": "env",
+      "key": "NET_TIMEOUT",
+      "default": "5m"
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "Test application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "block-dns-on-vm",
+      "provider": {
+        "type": "python",
+        "module": "chaosturbulence.actions",
+        "func": "attack",
+        "arguments": {
+          "task": { "Type": "BlockDNS", "Timeout": "${block_timeout}" },
+          "selector": {
+            "Deployment": {"Name": "${deployment_name}"},
+            "Group": {"Name": "${job_name}"},
+            "ID": {"Limit": "${limit_nodes}"}
+          }
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+  "rollbacks": []
+}
