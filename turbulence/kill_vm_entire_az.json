@@ -1,0 +1,79 @@
+{
+  "version": "0.1.0",
+  "title": "What is the impact of deleting an entire AZ worth of PCF/TAS VM?",
+  "description": "If an entire AZ worth of PCF/TAS VM's have been deleted, then what happens to the quality of service?",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "tls",
+    "cloudfoundry"
+  ],
+  "configuration": {
+    "turb_verify_ssl": false,
+    "turb_api_url": {
+      "type": "env",
+      "key": "TURBULENCE_URL",
+      "default": "https://turbulence:PASSWORD@10.244.0.35:8080"
+    },
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "deployment_name": {
+      "type": "env",
+      "key": "DEPLOYMENT_NAME",
+      "default": "cf-123ABC"
+    },
+    "az_name": {
+      "type": "env",
+      "key": "AZ_NAME_TO_DELETE",
+      "default": "z1"
+    },
+    "limit_nodes": {
+      "type": "env",
+      "key": "LIMIT",
+      "default": 1000
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "Test application responds",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "delete-vm",
+      "provider": {
+        "type": "python",
+        "module": "chaosturbulence.actions",
+        "func": "attack",
+        "arguments": {
+          "task": { "Type": "Kill" },
+          "selector": {
+            "Deployment": { "Name": "${deployment_name}", "Limit": "${limit_nodes}" },
+            "AZ": { "Name": "${$az_name}", "Limit": "${limit_nodes}" }
+          }
+        }
+      },
+      "pauses": {
+        "after": 1
+      }
+    }
+    ],
+  "rollbacks": []
+}
