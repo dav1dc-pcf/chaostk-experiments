@@ -85,10 +85,28 @@
         "func": "stop_app"
       },
       "pauses": {
-        "after": 15
+        "after": 60
       }
     }
   ],
   "rollbacks": [
+    {
+      "type": "action",
+      "name": "start-app",
+      "provider": {
+        "module": "chaoscf.actions",
+        "arguments": {
+          "app_name": "${cf_app_name}",
+          "org_name": "${cf_org}",
+          "space_name": "${cf_space}"
+        },
+        "type": "python",
+        "secrets": ["cloudfoundry"],
+        "func": "start_app"
+      },
+      "pauses": {
+        "after": 15
+      }
+    }
   ]
 }
