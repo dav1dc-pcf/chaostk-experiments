@@ -1,0 +1,94 @@
+{
+  "version": "0.1.0",
+  "title": "Stop/Halt an application running omn cloud foundry",
+  "description": "This is an experiment that will stop an app running on CF, this experiment is therefore expected to fail",
+  "contributions": {
+    "reliability": "high",
+    "availability": "high",
+    "performance": "medium",
+    "security": "none"
+  },
+  "tags": [
+    "cloudfoundry", 
+    "bosh", 
+    "springboot"
+  ],
+  "configuration": {
+    "cf_api_url": {
+      "type": "env",
+      "key": "CF_API_URL",
+      "default": "https://api.run.pivotal.io"
+    },
+    "site_to_test": {
+      "type": "env",
+      "key": "SITE_TO_TEST",
+      "default": "https://www.google.com/"
+    },
+    "cf_org": {
+      "type": "env",
+      "key": "CF_ORG",
+      "default": "orgname"
+    },
+    "cf_space": {
+      "type": "env",
+      "key": "CF_SPACE",
+      "default": "chaos"
+    },
+    "cf_app_name": {
+      "type": "env",
+      "key": "CF_APP_NAME",
+      "default": "spring-music"
+    },
+    "cf_verify_ssl": false
+  },
+  "secrets": {
+    "cloudfoundry": {
+      "cf_username": {
+        "type": "env",
+        "key": "CF_USERNAME",
+        "default": "username"
+      },
+      "cf_password": {
+        "type": "env",
+        "key": "CF_PASSWORD",
+        "default": "password"
+      }
+    }
+  },
+  "steady-state-hypothesis": {
+    "title": "We can access the test application on the CF platform",
+    "probes": [
+      {
+        "type": "probe",
+        "name": "test-app-responds",
+        "tolerance": 200,
+        "provider": {
+          "type": "http",
+          "url": "${site_to_test}"
+        }
+      }
+    ]
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "stop-app",
+      "provider": {
+        "module": "chaoscf.actions",
+        "arguments": {
+          "app_name": "${cf_app_name}",
+          "org_name": "${cf_org}",
+          "space_name": "${cf_space}"
+        },
+        "type": "python",
+        "secrets": ["cloudfoundry"],
+        "func": "stop_app"
+      },
+      "pauses": {
+        "after": 15
+      }
+    }
+  ],
+  "rollbacks": [
+  ]
+}
