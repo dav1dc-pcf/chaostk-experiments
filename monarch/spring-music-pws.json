@@ -28,7 +28,8 @@
         "tolerance": 200,
         "provider": {
           "type": "http",
-          "url": "https://spring-music-responsible-lemur-uh.cfapps.io/"
+          "url": "https://spring-music-responsible-lemur-uh.cfapps.io/",
+          "verify_tls": false
         }
       },
       {
@@ -37,7 +38,8 @@
         "tolerance": 200,
         "provider": {
           "type": "http",
-          "url": "https://www.google.com/"
+          "url": "https://www.google.com/",
+          "verify_tls": false
         }
       }
     ]
