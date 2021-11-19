@@ -43,6 +43,11 @@
       "type": "env",
       "key": "STRESS_IO_NUM_WORKERS",
       "default": 1
+    },
+    "network_timeout": {
+      "type": "env",
+      "key": "NET_TIMEOUT",
+      "default": "1m"
     }
   },
   "steady-state-hypothesis": {
@@ -68,7 +73,7 @@
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "Stress", "NumIOWorkers": "${io_workers}" },
+          "task": { "Type": "Stress", "NumIOWorkers": "${io_workers}", "Timeout": "${network_timeout}" },
           "selector": {
             "Deployment": {"Name": "${deployment_name}"},
             "Group": {"Name": "${job_name}"},

@@ -48,6 +48,11 @@
       "type": "env",
       "key": "STRESS_HDD_NUM_BYTES",
       "default": "1M"
+    },
+    "network_timeout": {
+      "type": "env",
+      "key": "NET_TIMEOUT",
+      "default": "1m"
     }
   },
   "steady-state-hypothesis": {
@@ -73,7 +78,7 @@
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "Stress", "NumHDDWorkers": "${hdd_workers}", "HDDWorkerBytes": "${hdd_bytes}" },
+          "task": { "Type": "Stress", "NumHDDWorkers": "${hdd_workers}", "HDDWorkerBytes": "${hdd_bytes}", "Timeout": "${network_timeout}" },
           "selector": {
             "Deployment": {"Name": "${deployment_name}"},
             "Group": {"Name": "${job_name}"},
