@@ -44,6 +44,31 @@
       "key": "STRESS_CPU_NUM_WORKERS",
       "default": 2
     },
+    "hdd_workers": {
+      "type": "env",
+      "key": "STRESS_HDD_NUM_WORKERS",
+      "default": 1
+    },
+    "hdd_bytes": {
+      "type": "env",
+      "key": "STRESS_HDD_NUM_BYTES",
+      "default": "1M"
+    },
+    "io_workers": {
+      "type": "env",
+      "key": "STRESS_IO_NUM_WORKERS",
+      "default": 1
+    },
+    "ram_workers": {
+      "type": "env",
+      "key": "STRESS_RAM_NUM_WORKERS",
+      "default": 1
+    },
+    "ram_bytes": {
+      "type": "env",
+      "key": "STRESS_RAM_NUM_BYTES",
+      "default": "50K"
+    },
     "network_timeout": {
       "type": "env",
       "key": "NET_TIMEOUT",
