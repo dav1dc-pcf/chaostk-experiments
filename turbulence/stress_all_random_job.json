@@ -99,7 +99,7 @@
         "module": "chaosturbulence.actions",
         "func": "attack",
         "arguments": {
-          "task": { "Type": "Stress", "NumCPUWorkers": "${cpu_workers}", "NumHDDWorkers": "${hdd_workers}", "HDDWorkerBytes": "${hdd_bytes}", "NumIOWorkers": "${io_workers}", "NumMemoryWorkers": "${ram_workers}", "MemoryWorkerBytes": "${ram_bytes}", "Timeout": "${network_timeout}" },
+          "task": { "Type": "Stress", "NumCPUWorkers": ${cpu_workers}, "NumHDDWorkers": ${hdd_workers}, "HDDWorkerBytes": "${hdd_bytes}", "NumIOWorkers": ${io_workers}, "NumMemoryWorkers": ${ram_workers}, "MemoryWorkerBytes": "${ram_bytes}", "Timeout": "${network_timeout}" },
           "selector": {
             "Deployment": {"Name": "${deployment_name}"},
             "Group": {"Name": "${job_name}"},
