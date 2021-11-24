@@ -93,7 +93,7 @@
   "method": [
     {
       "type": "action",
-      "name": "stress-cpu",
+      "name": "stress-all",
       "provider": {
         "type": "python",
         "module": "chaosturbulence.actions",
