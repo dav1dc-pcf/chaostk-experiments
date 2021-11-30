@@ -42,7 +42,7 @@
     "cpu_workers": {
       "type": "env",
       "key": "STRESS_CPU_NUM_WORKERS",
-      "default": 2
+      "default": 1
     },
     "hdd_workers": {
       "type": "env",
@@ -52,7 +52,7 @@
     "hdd_bytes": {
       "type": "env",
       "key": "STRESS_HDD_NUM_BYTES",
-      "default": "1M"
+      "default": "512K"
     },
     "io_workers": {
       "type": "env",
@@ -67,7 +67,7 @@
     "ram_bytes": {
       "type": "env",
       "key": "STRESS_RAM_NUM_BYTES",
-      "default": "50K"
+      "default": "20K"
     },
     "network_timeout": {
       "type": "env",
