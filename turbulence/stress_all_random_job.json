@@ -42,7 +42,7 @@
     "cpu_workers": {
       "type": "env",
       "key": "STRESS_CPU_NUM_WORKERS",
-      "default": 1
+      "default": 2
     },
     "hdd_workers": {
       "type": "env",
