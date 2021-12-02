@@ -32,11 +32,12 @@
     "az_name": {
       "type": "env",
       "key": "AZ_NAME_TO_DELETE",
-      "default": "z1"
+      "default": "az1"
     },
     "limit_nodes": {
       "type": "env",
       "key": "LIMIT",
+      "env_var_type": "int",
       "default": 1000
     }
   },

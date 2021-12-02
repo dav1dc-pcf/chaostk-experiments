@@ -37,6 +37,7 @@
     "limit_nodes": {
       "type": "env",
       "key": "LIMIT",
+      "env_var_type": "int",
       "default": 1
     },
     "process_name_to_kill": {

@@ -32,11 +32,13 @@
     "limit_nodes": {
       "type": "env",
       "key": "LIMIT",
+      "env_var_type": "int",
       "default": 3
     },
     "zone_to_delete": {
       "type": "env",
       "key": "ZONE_TO_DELETE",
+      "env_var_type": "int",
       "default": 1
     }
   },

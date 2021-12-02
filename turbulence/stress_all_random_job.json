@@ -37,16 +37,19 @@
     "limit_nodes": {
       "type": "env",
       "key": "LIMIT",
+      "env_var_type": "int",
       "default": 1
     },
     "cpu_workers": {
       "type": "env",
       "key": "STRESS_CPU_NUM_WORKERS",
+      "env_var_type": "int",
       "default": 2
     },
     "hdd_workers": {
       "type": "env",
       "key": "STRESS_HDD_NUM_WORKERS",
+      "env_var_type": "int",
       "default": 1
     },
     "hdd_bytes": {
@@ -57,11 +60,13 @@
     "io_workers": {
       "type": "env",
       "key": "STRESS_IO_NUM_WORKERS",
+      "env_var_type": "int",
       "default": 1
     },
     "ram_workers": {
       "type": "env",
       "key": "STRESS_RAM_NUM_WORKERS",
+      "env_var_type": "int",
       "default": 1
     },
     "ram_bytes": {

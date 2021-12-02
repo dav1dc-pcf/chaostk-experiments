@@ -37,26 +37,31 @@
     "limit_nodes": {
       "type": "env",
       "key": "LIMIT",
+      "env_var_type": "int",
       "default": 1
     },
     "duration": {
       "type": "env",
       "key": "DURATION_SECONDS",
+      "env_var_type": "int",
       "default": 60
     },
     "timeout": {
       "type": "env",
       "key": "TIMEOUT_SECONDS",
+      "env_var_type": "int",
       "default": 60
     },
     "delay": {
       "type": "env",
       "key": "NET_DELAY",
+      "env_var_type": "int",
       "default": 200
     },
     "jitter": {
       "type": "env",
       "key": "NET_JITTER",
+      "env_var_type": "int",
       "default": 50
     }
   },

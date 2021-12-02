@@ -6,7 +6,7 @@
   "configuration": {
     "TODO": "Some of this needs to be part of the application configuration since the user of this would not know what the cli commands are for instance.",
     "bosh": {
-      "cmd": "bosh2",
+      "cmd": "bosh",
       "env": "tt-stg02",
       "cf-dep": "cf-da0ba81cb255ad93a508",
       "cfdot-dc": "diego_cell/0"
